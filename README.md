@@ -1,26 +1,65 @@
 # Studi Kasus 6 Muhammad Favian Daffa
+
 # Sistem Pencatatan Nilai Mahasiswa
 
-Merupakan program sederhana yang digunakan untuk mencatat dan melihat data nilai mahasiswa. Data yang dimasukkan disimpan ke dalam file **JSON**, sehingga data tetap dapat digunakan kembali ketika program dijalankan.
+Program sederhana untuk **mencatat dan melihat data nilai mahasiswa**. Data yang dimasukkan disimpan ke dalam file **JSON**, sehingga data tetap tersimpan dan dapat digunakan kembali ketika program dijalankan.
 
 ---
 
-# Fitur Program
+## Fitur Program
 
-### 1. Menampilkan Data
+Program memiliki beberapa fitur utama:
 
-Program dapat membaca data yang terdapat pada `nilai_mahasiswa.json` kemudian menampilkannya ke layar.
+1. **Tampilkan Data Nilai**
+2. **Tambah Data Nilai**
+3. **Keluar dari Program**
+4. **Validasi Data Kosong**
+5. **Validasi Nilai 0–100**
+6. **Penyimpanan Data Menggunakan JSON**
 
-Data yang ditampilkan meliputi:
+---
 
-- Nama mahasiswa
-- NIM
-- Mata kuliah
-- Nilai
+## 1. Import Library dan Data Awal
 
-Jika belum ada data yang tersimpan, program akan menampilkan pesan bahwa data nilai belum tersedia.
+Bagian ini merupakan awal program. Library `json` digunakan untuk membaca dan menyimpan data dalam format JSON. Variabel `nama_file` digunakan untuk menentukan nama file tempat data mahasiswa disimpan.
 
-Contoh kode:
+```python
+import json
+import os
+
+nama_file = "nilai_mahasiswa.json"
+```
+
+---
+
+## 2. Function `baca_data()`
+
+Function ini digunakan untuk membaca data mahasiswa yang tersimpan di dalam file `nilai_mahasiswa.json`. Data yang telah dibaca kemudian dikembalikan menggunakan `return`.
+
+```python
+def baca_data():
+    with open(nama_file, "r") as file:
+        data = json.load(file)
+    return data
+```
+
+---
+
+## 3. Function `simpan_data()`
+
+Function ini digunakan untuk menyimpan data mahasiswa ke dalam file JSON. `json.dump()` digunakan untuk menulis data ke file, sedangkan `indent=4` digunakan agar isi file JSON lebih rapi.
+
+```python
+def simpan_data(data):
+    with open(nama_file, "w") as file:
+        json.dump(data, file, indent=4)
+```
+
+---
+
+## 4. Function `tampilkan_data()`
+
+Function ini digunakan untuk menampilkan data nilai mahasiswa. Program membaca data menggunakan `baca_data()`. Jika data masih kosong, program menampilkan pesan bahwa belum ada data. Jika data tersedia, program menampilkan setiap data menggunakan perulangan `for`.
 
 ```python
 def tampilkan_data():
@@ -40,91 +79,70 @@ def tampilkan_data():
 
 ---
 
-### 2. Menambahkan Data
+## 5. Function `tambah_data()`
 
-Pengguna dapat memasukkan data mahasiswa melalui menu **Tambah Data Nilai**. Data yang perlu dimasukkan yaitu:
-
-```text
-Nama
-NIM
-Mata Kuliah
-Nilai
-```
-
-Data tersebut kemudian dibuat menjadi sebuah dictionary.
+Function ini digunakan untuk menambahkan data mahasiswa baru. Pengguna memasukkan nama, NIM, mata kuliah, dan nilai.
 
 ```python
+def tambah_data():
+    print("\n=== TAMBAH NILAI MAHASISWA ===")
+    nama = input("Nama : ")
+    nim = input("NIM : ")
+    matkul = input("Mata Kuliah : ")
+    nilai = input("Nilai : ")
+```
+
+### Validasi Data
+
+Program memeriksa agar nama, NIM, mata kuliah, dan nilai tidak boleh kosong.
+
+```python
+if nama == "" or nim == "" or matkul == "":
+    print("\nData tidak boleh kosong!")
+    return
+
+if nilai == "":
+    print("\nNilai tidak boleh kosong!")
+    return
+```
+
+### Validasi Nilai
+
+Nilai kemudian diubah menjadi angka dan diperiksa agar berada pada rentang 0 sampai 100.
+
+```python
+nilai = int(nilai)
+
+if nilai < 0 or nilai > 100:
+    print("\nNilai harus berada di antara 0 - 100!")
+    return
+```
+
+### Menyimpan Data
+
+Jika data sudah benar, program membuat dictionary baru kemudian memasukkannya ke dalam list dan menyimpannya ke file JSON.
+
+```python
+data = baca_data()
+
 data_baru = {
-    "nim": nim,
     "nama": nama,
+    "nim": nim,
     "matkul": matkul,
     "nilai": nilai
 }
-```
 
-Setelah dibuat, data dimasukkan ke dalam list menggunakan `append()`.
-
-```python
 data.append(data_baru)
+simpan_data(data)
+
+print("\nData berhasil ditambahkan dan disimpan.")
 ```
 
 ---
 
-### 3. Validasi Data
+## 6. Program Utama
 
-Sebelum data disimpan, program melakukan pemeriksaan terhadap data. Nama, Nim, Matkul dan Nilai tidak boleh kosong serta Nilai harus berada di antara 0 sampai 100.
-
-```python
-    if nama == "" or nim == "" or matkul == "":
-        print("\nData tidak boleh kosong!")
-        return
-
-    if nilai == "":
-        print("\nNilai tidak boleh kosong!")
-        return
-
-    nilai = int(nilai)
-    if nilai < 0 or nilai > 100:
-        print("\nNilai harus berada di antara 0 - 100!")
-        return
-```
-
-Jika data tidak sesuai, proses penambahan data dihentikan dan data tidak disimpan.
-
----
-
-### 4. Penyimpanan Data JSON
-
-Data mahasiswa disimpan dalam file:
-
-```text
-nilai_mahasiswa.json
-```
-
-Program menggunakan `json` untuk membaca dan menyimpan data.
-
-Fungsi penyimpanan data:
-
-```python
-def simpan_data(data):
-    with open(nama_file, "w") as file:
-        json.dump(data, file, indent=4)
-```
----
-
-### 5. Menu Berulang
-
-Program menggunakan `while True` agar menu dapat digunakan secara berulang.
-
-Menu yang tersedia:
-
-```text
-1. Tampilkan Data Nilai
-2. Tambah Data Nilai
-3. Keluar
-```
-
-Program akan terus berjalan sampai pengguna memilih menu **3. Keluar**.
+Bagian ini merupakan bagian utama program. `while True` digunakan agar menu terus berjalan sampai pengguna memilih menu keluar.
 
 ```python
 while True:
@@ -136,18 +154,72 @@ while True:
     print("3. Keluar")
 ```
 
----
+Pilihan pengguna diproses menggunakan `if`, `elif`, dan `else`.
 
+```python
+pilihan = input("Pilih menu: ")
+
+if pilihan == "1":
+    tampilkan_data()
+elif pilihan == "2":
+    tambah_data()
+elif pilihan == "3":
+    print("\nProgram selesai.")
+    break
+else:
+    print("\nPilihan tidak tersedia.")
+```
+
+Setelah menjalankan menu, pengguna diminta menekan Enter untuk kembali ke menu utama.
+
+```python
+input("\nTekan Enter untuk melanjutkan...")
+```
 
 ---
 
 # Fungsi yang Digunakan
 
-| Fungsi | Kegunaan |
-|---|---|
-| `baca_data()` | Mengambil data dari file JSON |
-| `simpan_data(data)` | Menyimpan perubahan data ke file JSON |
-| `tampilkan_data()` | Menampilkan data mahasiswa |
-| `tambah_data()` | Memasukkan dan menyimpan data mahasiswa baru |
+| Function            | Kegunaan                         |
+| ------------------- | -------------------------------- |
+| `baca_data()`       | Membaca data dari file JSON      |
+| `simpan_data(data)` | Menyimpan data ke file JSON      |
+| `tampilkan_data()`  | Menampilkan data nilai mahasiswa |
+| `tambah_data()`     | Menambahkan data mahasiswa baru  |
 
 ---
+
+# Struktur Data
+
+Data mahasiswa disimpan dalam bentuk **list yang berisi dictionary**.
+
+Contoh:
+
+```json
+[
+    {
+        "nama": "Favian",
+        "nim": "021",
+        "matkul": "DDPWANGI",
+        "nilai": 100
+    }
+]
+```
+
+---
+
+# Menu Program
+
+```text
+==============================
+ SISTEM PENCATATAN NILAI
+==============================
+1. Tampilkan Data Nilai
+2. Tambah Data Nilai
+3. Keluar
+Pilih menu:
+```
+
+---
+
+# Contoh Output
