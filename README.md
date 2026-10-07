@@ -47,7 +47,7 @@ def baca_data():
 
 ## 3. Function `simpan_data()`
 
-Function ini digunakan untuk menyimpan data mahasiswa ke dalam file JSON. `json.dump()` digunakan untuk menulis data ke file, sedangkan `indent=4` digunakan agar isi file JSON lebih rapi.
+Function ini digunakan untuk menyimpan data mahasiswa ke dalam file JSON. `json.dump()` digunakan untuk menulis data ke file.
 
 ```python
 def simpan_data(data):
@@ -178,14 +178,14 @@ input("\nTekan Enter untuk melanjutkan...")
 
 ---
 
-# Fungsi yang Digunakan
+# Function yang Digunakan
 
 | Function            | Kegunaan                         |
 | ------------------- | -------------------------------- |
 | `baca_data()`       | Membaca data dari file JSON      |
 | `simpan_data(data)` | Menyimpan data ke file JSON      |
 | `tampilkan_data()`  | Menampilkan data nilai mahasiswa |
-| `tambah_data()`     | Menambahkan data mahasiswa baru  |
+| `tambah_data()`     | Menambahkan data mahasiswa   |
 
 ---
 
@@ -222,4 +222,7 @@ Pilih menu:
 
 ---
 
-# Contoh Output
+# OUTPUT:
+
+<img width="308" height="639" alt="image" src="https://github.com/user-attachments/assets/7f4881cf-4783-4554-bf95-0daef8990a9f" />
+
